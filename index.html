@@ -1,79 +1,1253 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>     
+<head>       
+  <title>SWEN ONLINE SHOPPING</title>        
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script> 
+  <style>        
 
-<head>
+   body{
+  margin:0;
+  font-family:Arial;
+  background:#cfd4da;
+  padding-top:80px;
+}    
+    
+ /* HEADER */  
+.top-marquee{  
+background:#111;  
+position:fixed;  
+top:0;  
+width:100%;  
+height:45px;  
+display:flex;  
+align-items:center;  
+overflow:hidden;  
+z-index:3000;  
+}
+    
+    /* LOGO */
+.logo{
+height:45px;
+margin:0;
+padding:0;
+object-fit:contain;
+background:#111;
+z-index:10;
+}
 
-<meta charset="UTF-8">
+/* MOVING TEXT */
+.marquee-wrapper{
+position:absolute;
+width:100%;
+overflow:hidden;
+z-index:1;
+}
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+.marquee-text{
+white-space:nowrap;
+animation:move 12s linear infinite;
+color:white;
+margin-left:120px;
+}
 
-<title>SBY FURNITURES</title>
+@keyframes move{
+0%{transform:translateX(100%);}
+100%{transform:translateX(-100%);}
+}
+/******** ADMIN PANEL ********/
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+.admin{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#fff;
+  z-index:5000;
+  padding:10px;
+  overflow-y:auto;
+  flex-direction:column;
+  align-items:center;
+}
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+.admin h3{
+  width:100%;
+  max-width:320px;
+  margin:6px 0 4px;
+  font-size:16px;
+}
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+.admin hr{
+  width:100%;
+  max-width:320px;
+  margin:6px 0;
+  border:0;
+  border-top:1px solid #ddd;
+}
 
-<link rel="stylesheet" href="style.css">
+.admin .form-group{
+  width:100%;
+  max-width:320px;
+  margin:3px 0;
+}
 
-</head>
+.admin label{
+  display:block;
+  width:100%;
+  font-size:13px;
+  font-weight:bold;
+  color:#222;
+  margin-bottom:2px;
+}
 
-<body>
+.admin input,
+.admin select{
+  width:100%;
+  max-width:320px;
+  padding:8px;
+  font-size:13px;
+  border:1px solid #ccc;
+  border-radius:8px;
+  margin:2px 0;
+  box-sizing:border-box;
+}
 
-<!-- =========================================================
-SECTION 01
-SBY FURNITURES HEADER
-========================================================= -->
+.admin .btn{
+  width:100%;
+  max-width:320px;
+  padding:9px;
+  margin:4px 0;
+  font-size:13px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  text-align:center;
+}
 
-<header class="header">
 
-<div class="container">
+/* ADMIN ICON */
+.admin-icon{
+position:absolute;
+right:0;
+width:45px;
+height:45px;
+background:#222;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+cursor:pointer;
+z-index:10;
+}
+/* CATEGORY */
+.category-bar{
+  position:fixed;
+  top:45px;
+  width:100%;
+  height:45px;
+  display:flex;
+  align-items:center;
+  overflow-x:auto;
+  z-index:2000;
 
-<a href="#" class="logo">
-SBY <span>FURNITURES</span>
-</a>
+  background: linear-gradient(90deg, #1877F2, #0d5bd7);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+    
+.category-btn{
+  color:white;
+  padding:6px 14px;
+  margin:5px;
+  border-radius:18px;
+  white-space:nowrap;
+  cursor:pointer;
+  font-size:13px;
+  font-weight:500;
+  transition:0.2s;
+}
 
-<nav class="navbar" id="navbar">
+.category-btn.active{
+  background:white;
+  color:#1877F2;
+}
 
-<a href="#" class="active">Home</a>
+.view{display:none;padding:10px;}
+.active-view{display:block;}
 
-<a href="#">Gallery</a>
+/* CARD */
+.card{
+background:white;
+border-radius:14px;
+padding:10px;
+margin-bottom:15px;
+}
 
-<a href="#">Categories</a>
+/* IMAGE */
+.img-wrap{
+position:relative;
+overflow:hidden;
+border-radius:12px;
+}
 
-<a href="#">About Us</a>
+/* NEW BADGE */
+.new-badge{
+position:absolute;
+top:8px;
+left:8px;
+background:red;
+color:white;
+font-size:11px;
+padding:4px 6px;
+border-radius:5px;
+z-index:10;
+}
+/* CAROUSEL */
+.carousel{
+  display:flex;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
 
-<a href="#">Contact</a>
+  width:100%;
+  border-radius:12px;
 
-</nav>
+  -webkit-overflow-scrolling:touch;
+}
 
-<div class="header-icons">
+.carousel::-webkit-scrollbar{
+  display:none;
+}
 
-<button id="themeToggle" class="theme-btn">
+.carousel img{
+  flex:0 0 100%;
+  width:100%;
+  height:440px;
 
-<i class="fa-solid fa-moon"></i>
+  object-fit:cover;
+  scroll-snap-align:start;
+  border-radius:12px;
+}
 
-</button>
+.social-btn img{
+width:22px;
+height:22px;
+}
+.social-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
 
-<button id="menuBtn" class="menu-btn">
+  padding:6px 10px;
+  border-radius:18px;
 
-<i class="fa-solid fa-bars"></i>
+  color:#fff;
+  font-size:11px;
+  font-weight:500;
 
-</button>
+  width:fit-content;   /* key fix */
+  max-width:120px;     /* prevents stretching */
+  white-space:nowrap;
+
+  flex-shrink:0;
+}
+
+.social-btn img{
+width:18px;
+height:18px;
+object-fit:contain;
+}
+.carousel::-webkit-scrollbar{display:none;}
+/* DOTS */
+.dots{text-align:center;margin-top:5px;}
+.dot{
+height:8px;width:8px;
+margin:0 3px;
+background:#bbb;
+border-radius:50%;
+display:inline-block;
+}
+.dot.active { background:#25D366; }
+
+/* PRICE */
+.price{
+background:#111;
+color:white;
+text-align:center;
+padding:10px;
+margin-top:10px;
+border-radius:8px;
+}
+
+/* BUY BUTTON FIXED */
+.buy-btn{
+background:#25D366;
+color:white;
+border:none;
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:12px;
+font-weight:bold;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+cursor:pointer;
+}
+
+.buy-btn img{
+width:20px;
+height:20px;
+display:block;
+}
+
+
+input,select{
+width:100%;
+max-width:320px;
+padding:10px;
+margin:5px 0;
+box-sizing:border-box;
+}
+
+.btn{
+width:100%;
+padding:10px;
+background:green;
+color:white;
+border:none;
+margin-top:5px;
+cursor:pointer;
+}
+
+.admin-item{
+display:flex;
+align-items:center;
+gap:10px;
+background:#f2f2f2;
+padding:8px;
+margin:5px 0;
+border-radius:6px;
+}
+.delete-btn{
+background:red;
+color:white;
+border:none;
+padding:6px;
+cursor:pointer;
+}
+
+.testimonial-carousel{
+display:flex;
+overflow-x:auto;
+scroll-snap-type:x mandatory;
+scroll-behavior:smooth;
+border-radius:12px;
+}
+
+.testimonial-carousel::-webkit-scrollbar{
+display:none;
+}
+
+.testimonial-carousel img{
+min-width:100%;
+height:380px;      /* same as product images */
+object-fit:contain;
+scroll-snap-align:center;
+background:white;
+border-radius:12px;
+}
+.testimonial-item{
+display:flex;
+align-items:center;
+gap:10px;
+background:#f2f2f2;
+padding:8px;
+margin:5px 0;
+border-radius:6px;
+}
+
+.testimonial-item img{
+width:40px;
+height:40px;
+object-fit:cover;
+border-radius:5px;
+}
+.fb{background:#1877F2;}
+.ig{background:#E1306C;}
+.tt{background:#000;}
+.wa{background:#25D366;}
+
+div::-webkit-scrollbar{
+display:none;
+}
+
+</style>      
+</head> 
+  <body>  
+
+    
+ <!-- HEADER -->  
+ <div class="top-marquee">        
+ <img src="logoo.png" class="logo">   
+ <div class="marquee-wrapper">   <div class="marquee-text">        
+      ✨ SWEN ONLINE SHOPPING ✨ KASUWA A TAFINKA ✨ MOST TRUSTED ONLINE MARKET ✨        
+    </div>        
+  </div>    <div class="admin-icon" onclick="openAdmin()">🔒</div>        
+</div>    
+
+ <!-- CATEGORY -->   
+    <div class="category-bar" id="categoryBar"></div>     
+    <!-- VIEWS -->   
+    <div id="aboutView" class="view active-view">        
+  <div class="card">   
+   
+ <!-- TESTIMONIAL -->   
+ <h3 style="text-align:center;">What Our Customers Say 💬</h3>        
+<div class="carousel testimonial-carousel" id="testimonialCarousel"></div>      
+<div class="dots" id="testimonialDots"></div>      
+<hr> 
+    
+ <!-- WELCOME -->   
+ <h2 style="text-align:center;">Welcome to Swen Online Shopping 👋</h2>        
+<p style="text-align:center;">        
+  Your trusted destination for premium fabrics, modern fashion styles, and quality textile products across Nigeria.        
+</p>      <hr>     
+ 
+<!-- ABOUT US -->
+<h3>About Us</h3>
+
+<p>
+  <strong>Swen Online Shopping</strong> is a trusted online marketplace that brings together some of the most popular textile and fashion stores across the nation. We specialize in connecting customers with high-quality fabrics and stylish clothing for men, women, and children—all in one convenient place.
+</p>
+
+<p>
+  Our platform features a wide selection of premium fabrics, traditional materials, modern fashion textiles, ready-to-wear outfits, and accessories from trusted sellers. Whether you are shopping for everyday wear, special occasions, or fashion design projects, Swen Online Shopping provides quality products at affordable prices.
+</p>
+
+<p>
+  We are committed to making online shopping simple, secure, and reliable by offering authentic products, excellent customer service, and a seamless shopping experience for individuals, families, tailors, fashion designers, and retailers.
+</p>
+
+<hr>
+
+<!-- OUR LOCATION -->
+<h3>Our Location</h3>
+
+<p>
+  <strong>📍 Kano, Nigeria</strong><br>
+  No. A45, Kantin Kwari Market
+</p>
+
+<hr>
+    
+    
+<!-- CONTACT -->   
+<h3>Contact & Business Info</h3>        
+<p>        
+  📞 +2348133839892<br>        
+  🕒 Monday – Saturday (9:00AM – 6:00PM)<br>        
+  🚚 Nationwide delivery available<br>        
+  💬 Fast WhatsApp support        
+</p>      <hr> 
+
+
+    
+ <!-- SOCIAL -->  
+ <h3>Connect With Us</h3>
+  <div style="
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:center;
+  padding-bottom:5px;
+">   
+    
+    <a href="https://www.facebook.com/share/" target="_blank" style="text-decoration:none;">        
+    <div class="social-btn fb">        
+      <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png">        
+      Facebook        
+    </div>        
+  </a>        <a href="https://wa.me/2348133839892" target="_blank" style="text-decoration:none;">        
+    <div class="social-btn wa">        
+      <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">        
+      WhatsApp        
+    </div>        
+  </a>      </div>      </div>        
+</div>  <div id="shaddaView" class="view"></div>        
+<div id="shoesView" class="view"></div>        
+<div id="abayasView" class="view"></div>        
+<div id="yardView" class="view"></div>      
+<div id="bagsView" class="view"></div>      
+<div id="capsView" class="view"></div>        
+<div id="vailView" class="view"></div>       
+  <!-- ADMIN -->    
+  <div class="admin" id="adminPanel">     
+    <h3>Admin Panel</h3>     
+    <div class="form-group">  
+  <label>Product Name</label>  
+  <input id="aName" placeholder="Enter product name">  
+</div>  <div class="form-group">  
+  <label>Price</label>  
+  <input id="aPrice" placeholder="Enter price">  
+</div>  <div class="form-group">  
+  <label>Category</label>  
+  <select id="aCategory"></select>  
+</div>  <button class="btn" onclick="uploadImage()">📷 Upload Images</button>
+<button class="btn" onclick="addProduct()">Save Product</button>
+
+  <hr>     
+    <h3>Delete Category</h3>  <div class="form-group">  
+  <label>Select Category</label>  
+  <select id="catDelete"></select>  
+</div>  <button class="btn" onclick="deleteCategory()">Delete Category</button>
+<hr>
+<h3>Delete Product</h3>
+<select id="delCat" onchange="loadDelete()"></select>
+
+  <div id="delList"></div>        <hr>      <h3>Testimonials</h3>        
+  <button class="btn" onclick="uploadTestimonials()">Upload Testimonials</button>        <hr>      <h3>Manage Testimonials</h3>      
+  <div id="testimonialList"></div>      <hr>      <h3>Add Category</h3>      
+  <input id="newCat" placeholder="New category name">      
+  <button class="btn" onclick="addCategory()">Add Category</button>      <hr>    
+    <button class="btn" onclick="logoutAdmin()" style="background:red;">
+Logout
+</button>  </div>     
+
+
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  
+// YOUR FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyCmQ9JMrOrN0uRPfkoVC3MHG5T_DhTq10Q",
+  authDomain: "halaltxtule.firebaseapp.com",
+  projectId: "halaltxtule",
+  storageBucket: "halaltxtule.firebasestorage.app",
+  messagingSenderId: "19964442643",
+  appId: "1:19964442643:web:23455dd3311bc169d4a7e6"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+window.auth = auth;
+window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+window.signOut = signOut;
+
+// MAKE GLOBAL
+window.db = db;
+window.fb = { collection, addDoc, getDocs, deleteDoc, doc };
+</script>
+
+
+    
+    
+ <script>   
+// Done
+let categories = [];
+let products = [];
+let uploadedImages = [];
+
+let adminPanel, delCat, delList, aName, aPrice, aCategory, aboutView;
+
+document.addEventListener("DOMContentLoaded", () => {
+  adminPanel = document.getElementById("adminPanel");
+  delCat = document.getElementById("delCat");
+  delList = document.getElementById("delList");
+  aName = document.getElementById("aName");
+  aPrice = document.getElementById("aPrice");
+  aCategory = document.getElementById("aCategory");
+  aboutView = document.getElementById("aboutView");
+
+  loadCategoriesFromFirebase();
+  loadProductsFromFirebase();
+  loadTestimonialsFromFirebase();
+});
+
+   
+/* add category */
+  // Done 
+async function addCategory(){
+  let newCat = document.getElementById("newCat").value.trim().toLowerCase();
+
+  if(!newCat) return;
+
+  await fb.addDoc(fb.collection(db, "categories"), {
+    name: newCat
+  });
+
+  document.getElementById("newCat").value = "";
+
+  loadCategoriesFromFirebase();
+}
+
+   
+// LOAD CATEGORIES 
+   // Dome
+async function loadCategoriesFromFirebase(){
+  categories = [];
+
+  const snap = await fb.getDocs(fb.collection(db, "categories"));
+
+  snap.forEach(docItem=>{
+    categories.push({
+      id: docItem.id,
+      name: docItem.data().name
+    });
+  });
+
+  // convert to simple array for your system
+  categories = categories.map(c => c.name);
+
+  loadCategories();
+  fillCats();
+}
+
+ //Done  
+function fillCats(){
+
+let html = categories
+.map(c => `<option value="${c}">${c.toUpperCase()}</option>`)
+.join("");
+
+delCat.innerHTML = html;
+
+document.getElementById("catDelete").innerHTML = html;
+
+// ADD THIS
+aCategory.innerHTML = html;
+
+}
+   
+// Done   
+async function deleteCategory(){
+  let cat = document.getElementById("catDelete").value;
+
+  const snap = await fb.getDocs(fb.collection(db, "categories"));
+
+  snap.forEach(async (d)=>{
+    if(d.data().name === cat){
+      await fb.deleteDoc(fb.doc(db, "categories", d.id));
+    }
+  });
+
+  loadCategoriesFromFirebase();
+}
+   
+/* VIEW */
+//Done
+document.querySelectorAll(".view")?.forEach(v=>{
+  v.classList.remove("active-view");
+});
+
+ // DONE
+function showView(type, el){
+
+  document.querySelectorAll(".category-btn").forEach(b=>{
+    b.classList.remove("active");
+  });
+
+  if(el) el.classList.add("active");
+
+  localStorage.setItem("activeView", type);
+
+  document.querySelectorAll(".view").forEach(v=>{
+    v.classList.remove("active-view");
+  });
+
+  if(type === "about"){
+    aboutView.classList.add("active-view");
+    return;
+  }
+
+  let view = document.getElementById(type + "View");
+
+  if(!view){
+    view = document.createElement("div");
+    view.id = type + "View";
+    view.className = "view";
+    document.body.appendChild(view);
+  }
+
+  let list = products.filter(p => p.category === type);
+
+  let html = "";
+
+  list.forEach((p,i)=>{
+
+let diff = Date.now() - p.date;
+
+let timeText = "";
+
+let mins = Math.floor(diff / 60000);
+let hours = Math.floor(diff / 3600000);
+let days = Math.floor(diff / 86400000);
+
+if(mins < 60){
+  timeText = mins + " min ago";
+}
+else if(hours < 24){
+  timeText = hours + " hr ago";
+}
+else{
+  timeText = days + " day ago";
+}
+
+let images = (p.images || []).map(img => `<img src="${img}">`).join("");
+
+html += `
+      <div class="card">
+        <div class="img-wrap">
+
+  <div class="new-badge">${timeText}</div>
+
+  <div class="carousel car${type}${i}">
+    ${images}
+  </div>
 
 </div>
 
-</div>
+        <div class="dots dots${type}${i}"></div>
 
-</header>
+        <div class="price">₦ ${p.price}</div>
 
-<!-- END SECTION 01 -->
+        <button class="buy-btn" onclick="buyNow(${i},'${type}')">
+          BUY NOW
+        </button>
+      </div>
+    `;
+  });
+
+  view.innerHTML = html;
+  view.classList.add("active-view");
+
+  list.forEach((p,i)=>setupCarousel(type,i));
+}
+// DONE
+/* BUY NOW */
+function buyNow(i, type){
+  // get product safely
+  const list = products.filter(p => p.category === type);
+  const p = list[i];
+  if (!p) return;
+
+  // get carousel (may not exist)
+  const car = document.querySelector(".car" + type + i);
+
+  // safe index calculation
+  let index = 0;
+  if (car && car.clientWidth > 0) {
+    index = Math.round(car.scrollLeft / car.clientWidth);
+  }
+
+  // safe image selection
+  const images = Array.isArray(p.images) ? p.images : [];
+  const img = images[index] || images[0] || "No image";
+
+  // build message
+  const msg = `Hello 👋,
+
+I want to order this Product:
+
+🧵 Category: ${type.toUpperCase()}
+🛍️ Product: ${p.name || "N/A"}
+💰 Price: ₦${p.price || "N/A"}
+
+🖼️ Selected Image:
+${img}
+
+Is this available? I want to buy.`;
+
+  // open WhatsApp
+  window.open(
+    "https://wa.me/2348133839892?text=" + encodeURIComponent(msg),
+    "_blank"
+  );
+}
+   
+// DONE
+/* CAROUSEL */
+function setupCarousel(type,i){
+let c = document.querySelector(".car"+type+i);
+let box = document.querySelector(".dots"+type+i);
+
+if(!c || !box) return; // ✅ prevent crash
+
+let imgs = c.querySelectorAll("img");
+box.innerHTML = "";
+
+// create dots
+imgs.forEach((_,x)=>{
+  let d = document.createElement("span");
+  d.className = "dot";
+  if(x===0) d.classList.add("active");
+  box.appendChild(d);
+});
+
+let dots = box.querySelectorAll(".dot");
+
+// ✅ prevent multiple listeners
+c.onscroll = () => {
+  if(c.clientWidth === 0) return;
+
+  let index = Math.round(c.scrollLeft / c.clientWidth);
+
+  dots.forEach(d=>d.classList.remove("active"));
+  if(dots[index]) dots[index].classList.add("active");
+};
+}
+
+// DONE
+/* ADMIN */
+   
+async function openAdmin(){
+
+  let email = prompt("Enter admin email");
+  if(!email) return;
+
+  let password = prompt("Enter admin password");
+  if(!password) return;
+
+  try{
+
+    await signInWithEmailAndPassword(auth, email, password);
+
+    adminPanel.style.display = "flex";
+
+    fillCats();
+
+    loadTestimonialAdmin();
+
+    alert("Admin login successful ✅");
+
+  }catch(err){
+
+    alert("Access denied ❌");
+
+    console.log(err);
+
+  }
+}
+
+async function logoutAdmin(){
+
+  await signOut(auth);
+
+  adminPanel.style.display = "none";
+
+  alert("Logged out");
+
+}   
+
+// Done   
+/* UPLOAD */
+function uploadImage(){
+  if (typeof cloudinary === "undefined") {
+    alert("Upload tool not loaded. Refresh page.");
+    return;
+  }
+
+  // ✅ clear previous images (optional but recommended)
+  uploadedImages = [];
+
+  alert("Opening upload...");
+
+  cloudinary.openUploadWidget({
+    cloudName: "db92r6j9z",
+    uploadPreset: "ummuhalti",
+    sources: ["local", "camera"],
+    multiple: true
+  }, (error, result) => {
+
+    if (error) {
+      console.log("Upload error:", error);
+      alert("Upload failed");
+      return;
+    }
+
+    if (result && result.event === "success") {
+      uploadedImages.push(result.info.secure_url);
+      console.log("Uploaded:", result.info.secure_url);
+    }
+
+    // ✅ show ONE message when upload closes
+    if (result && result.event === "close") {
+      if(uploadedImages.length > 0){
+        alert(uploadedImages.length + " image(s) uploaded successfully!");
+      }
+    }
+
+  });
+}
+   
+/* SAVE */
+// DONE
+   
+function loadCategories(){
+
+  let bar = document.getElementById("categoryBar");
+
+  if(!bar) return;
+
+  // ABOUT BUTTON FIRST
+  let html = `
+    <div class="category-btn active"
+         onclick="showView('about', this)">
+      HOME
+    </div>
+  `;
+
+  // PRODUCT CATEGORIES
+  categories.forEach(c => {
+    html += `
+      <div class="category-btn"
+           onclick="showView('${c}', this)">
+        ${c.toUpperCase()}
+      </div>
+    `;
+  });
+
+  bar.innerHTML = html;
+}
+
+   
+// DONE   
+/* DELETE */
+function loadDelete(){
+let cat = delCat.value;
+let html = "";
+
+// filter first
+let filtered = products.filter(p => p.category === cat);
+
+filtered.forEach((p,i)=>{
+
+let img = (p.images && p.images.length > 0) ? p.images[0] : "";
+
+html += `
+<div class="admin-item">
+  <img src="${img}" width="40">
+  <div style="flex:1">${p.name || "No name"}</div>
+  <button class="delete-btn" onclick="delProduct(${i})">Delete</button>
+</div>`;
+});
+
+if(delList) delList.innerHTML = html;
+}
+
+// DONE
+async function delProduct(i){
+  let cat = delCat.value;
+
+  let filtered = products.filter(p => p.category === cat);
+  let productToDelete = filtered[i];
+
+  await fb.deleteDoc(fb.doc(db, "products", productToDelete.id));
+
+  loadProductsFromFirebase();
+}
 
 
-<script src="script.js"></script>
+// DONE  
+async function deleteTestimonial(i){
+  let item = testimonials[i];
 
+  const snap = await fb.getDocs(fb.collection(db, "testimonials"));
+
+  snap.forEach(async (d)=>{
+    if(d.data().url === item){
+      await fb.deleteDoc(fb.doc(db, "testimonials", d.id));
+    }
+  });
+
+  loadTestimonialsFromFirebase();
+  loadTestimonialAdmin();
+}
+
+ // DONE  
+function del(i){
+let cat = delCat.value;
+
+let filtered = products.filter(p => p.category === cat);
+let productToDelete = filtered[i];
+
+if(!productToDelete) return; // ✅ safety
+
+products = products.filter(p => p !== productToDelete);
+
+localStorage.setItem("products", JSON.stringify(products));
+
+loadDelete();
+}  
+
+let testimonials = [];
+let tIndex = 0;
+let tAuto = null;
+
+// DONE   
+/* LOAD */
+async function loadTestimonialsFromFirebase(){
+  testimonials = [];
+
+  const snap = await fb.getDocs(fb.collection(db, "testimonials"));
+
+  snap.forEach(docItem=>{
+    testimonials.push({
+      id: docItem.id,
+      url: docItem.data().url
+    });
+  });
+
+  // convert to simple array
+  testimonials = testimonials.map(t => t.url);
+
+  loadTestimonials();
+}
+
+function loadTestimonials(){
+
+  let box = document.getElementById("testimonialCarousel");
+  let dots = document.getElementById("testimonialDots");
+
+  if(!box || !dots) return;
+
+  // CREATE IMAGES
+  box.innerHTML = testimonials.map(img => `
+    <img src="${img}">
+  `).join("");
+
+  // CREATE DOTS
+  dots.innerHTML = testimonials.map((_,i)=>`
+    <span class="dot ${i===0 ? 'active' : ''}"
+          onclick="scrollTestimonial(${i})">
+    </span>
+  `).join("");
+
+  // RESET INDEX
+  tIndex = 0;
+
+  // START AUTO SLIDE
+  startAuto();
+}
+
+/* SCROLL */
+// DONE
+function scrollTestimonial(i) {
+const box = document.getElementById("testimonialCarousel");
+const dots = document.querySelectorAll("#testimonialDots .dot");
+
+if(!box) return; // ✅ safety
+
+// clamp index within range
+if(i < 0) i = 0;
+if(i >= dots.length) i = dots.length - 1;
+
+// prevent divide/scroll issues
+if(box.clientWidth === 0) return;
+
+box.scrollTo({
+  left: box.clientWidth * i,
+  behavior: "smooth"
+});
+
+// update dots
+dots.forEach(d => d.classList.remove("active"));
+if (dots[i]) dots[i].classList.add("active");
+
+// update index
+tIndex = i;
+}
+   
+// DONE
+/* AUTO SLIDE */
+function startAuto() {
+clearInterval(tAuto);
+
+// safety check
+if (!Array.isArray(testimonials) || testimonials.length <= 1) return;
+
+tAuto = setInterval(() => {
+
+  // ensure index stays valid
+  tIndex = (tIndex + 1) % testimonials.length;
+
+  // safe call
+  if (typeof scrollTestimonial === "function") {
+    scrollTestimonial(tIndex);
+  }
+
+}, 4000);
+}
+   
+// DONE. 
+function restoreActiveView(){
+
+  let saved = localStorage.getItem("activeView") || "about";
+
+  // REMOVE ACTIVE FROM ALL BUTTONS
+  document.querySelectorAll(".category-btn").forEach(btn=>{
+    btn.classList.remove("active");
+  });
+
+  // HIDE ALL VIEWS
+  document.querySelectorAll(".view").forEach(v=>{
+    v.classList.remove("active-view");
+  });
+
+  // HOME / ABOUT DEFAULT
+  if(saved === "about"){
+
+    aboutView.classList.add("active-view");
+
+    let homeBtn = document.querySelector(".category-btn");
+
+    if(homeBtn){
+      homeBtn.classList.add("active");
+    }
+
+    return;
+  }
+
+  // OTHER CATEGORIES
+  let buttons = document.querySelectorAll(".category-btn");
+
+  buttons.forEach(btn=>{
+
+    if(btn.innerText.trim().toLowerCase() === saved){
+
+      showView(saved, btn);
+
+    }
+
+  });
+
+}
+
+   
+// Done
+  function initApp(){
+  loadCategoriesFromFirebase();
+  loadProductsFromFirebase();
+  loadTestimonialsFromFirebase();
+
+  setTimeout(()=>{
+    loadCategories();
+    restoreActiveView();
+  }, 200);
+} // ✅ CLOSE FUNCTION PROPERLY
+
+
+ // DONE  
+async function loadProductsFromFirebase(){
+
+  products = [];
+
+  const querySnapshot = await fb.getDocs(fb.collection(db, "products"));
+
+  const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
+  const now = Date.now();
+
+  for (const docItem of querySnapshot.docs) {
+    const data = docItem.data();
+
+    // Delete products older than one week
+    if (data.date && (now - data.date >= ONE_WEEK)) {
+      await fb.deleteDoc(fb.doc(db, "products", docItem.id));
+      continue;
+    }
+
+    products.push({
+      id: docItem.id,
+      ...data
+    });
+  }
+
+  // Show newest first
+  products.sort((a,b)=> b.date - a.date);
+
+  restoreActiveView();
+  loadDelete();
+}
+
+function loadTestimonialAdmin(){
+let box = document.getElementById("testimonialList");
+
+let html = "";
+
+testimonials.forEach((img,i)=>{
+html += `
+<div class="testimonial-item">
+  <img src="${img}">
+  <div style="flex:1">Testimonial ${i+1}</div>
+  <button class="delete-btn" onclick="deleteTestimonial(${i})">Delete</button>
+</div>`;
+});
+
+box.innerHTML = html;
+}
+    
+function uploadTestimonials(){
+alert("Uploading testimonial...");
+cloudinary.openUploadWidget({
+cloudName:"db92r6j9z",
+uploadPreset:"ummuhalti",
+multiple:true
+}, async (error, result) => {
+
+if(error) return;
+
+if(result && result.event === "success"){
+
+  await fb.addDoc(fb.collection(db, "testimonials"), {
+    url: result.info.secure_url
+  });
+
+  loadTestimonialsFromFirebase();
+  loadTestimonialAdmin();
+}
+
+});
+}
+async function addProduct(){
+  if(uploadedImages.length === 0){
+    alert("Upload images first");
+    return;
+  }
+
+  let newProduct = {
+    name: aName.value,
+    price: aPrice.value,
+    category: aCategory.value.toLowerCase(),
+    images: [...uploadedImages],
+    date: Date.now()
+  };
+
+  await fb.addDoc(fb.collection(db, "products"), newProduct);
+
+  uploadedImages = [];
+  aName.value = "";
+  aPrice.value = "";
+
+  alert("Product saved globally ✅");
+
+  loadProductsFromFirebase();
+}
+
+</script> 
 </body>
-</html>
+
+</html>      
