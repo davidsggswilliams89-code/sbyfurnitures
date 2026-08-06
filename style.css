@@ -1,0 +1,204 @@
+/* =========================================================
+SECTION 01
+SBY FURNITURES HEADER CSS
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f7f7f7;
+    color:#222;
+    transition:.3s;
+}
+
+body.dark{
+    background:#111;
+    color:#fff;
+}
+
+.container{
+    width:90%;
+    max-width:1300px;
+    margin:auto;
+}
+
+/* HEADER */
+
+.header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    background:#ffffff;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    z-index:1000;
+}
+
+body.dark .header{
+    background:#1a1a1a;
+}
+
+.header .container{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    height:80px;
+}
+
+.logo{
+    text-decoration:none;
+    font-size:30px;
+    font-weight:700;
+    color:#222;
+    letter-spacing:1px;
+}
+
+.logo span{
+    color:#b8860b;
+}
+
+body.dark .logo{
+    color:#fff;
+}
+
+.navbar{
+    display:flex;
+    gap:35px;
+}
+
+.navbar a{
+    text-decoration:none;
+    color:#222;
+    font-size:16px;
+    font-weight:500;
+    transition:.3s;
+    position:relative;
+}
+
+body.dark .navbar a{
+    color:#fff;
+}
+
+.navbar a:hover,
+.navbar a.active{
+    color:#b8860b;
+}
+
+.navbar a::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-6px;
+    width:0%;
+    height:2px;
+    background:#b8860b;
+    transition:.3s;
+}
+
+.navbar a:hover::after,
+.navbar a.active::after{
+    width:100%;
+}
+
+/* HEADER BUTTONS */
+
+.header-icons{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.theme-btn,
+.menu-btn{
+    width:45px;
+    height:45px;
+    border:none;
+    border-radius:50%;
+    background:#f2f2f2;
+    cursor:pointer;
+    font-size:18px;
+    transition:.3s;
+}
+
+.theme-btn:hover,
+.menu-btn:hover{
+    background:#b8860b;
+    color:#fff;
+}
+
+body.dark .theme-btn,
+body.dark .menu-btn{
+    background:#333;
+    color:#fff;
+}
+
+/* MOBILE MENU BUTTON */
+
+.menu-btn{
+    display:none;
+}
+
+/* MOBILE RESPONSIVE */
+
+@media(max-width:900px){
+
+.navbar{
+    position:absolute;
+    top:80px;
+    left:-100%;
+    width:100%;
+    background:#fff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:25px;
+    padding:30px 0;
+    transition:.35s;
+    box-shadow:0 10px 20px rgba(0,0,0,.08);
+}
+
+body.dark .navbar{
+    background:#1a1a1a;
+}
+
+.navbar.active{
+    left:0;
+}
+
+.menu-btn{
+    display:block;
+}
+
+}
+
+@media(max-width:600px){
+
+.header .container{
+    height:70px;
+}
+
+.logo{
+    font-size:24px;
+}
+
+.navbar{
+    top:70px;
+}
+
+.theme-btn,
+.menu-btn{
+    width:42px;
+    height:42px;
+    font-size:17px;
+}
+
+}
