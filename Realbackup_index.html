@@ -594,7 +594,8 @@ let uploadedImages = [];
 
 let adminPanel, delCat, delList, aName, aPrice, aCategory, aboutView;
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+
   adminPanel = document.getElementById("adminPanel");
   delCat = document.getElementById("delCat");
   delList = document.getElementById("delList");
@@ -603,51 +604,131 @@ document.addEventListener("DOMContentLoaded", () => {
   aCategory = document.getElementById("aCategory");
   aboutView = document.getElementById("aboutView");
 
-  loadCategoriesFromFirebase();
-  loadProductsFromFirebase();
-  loadTestimonialsFromFirebase();
-});
+  try {
 
+    // Load everything from Firebase
+    await loadCategoriesFromFirebase();
+    await loadProductsFromFirebase();
+    await loadTestimonialsFromFirebase();
+
+    // Restore the page after Firebase data has loaded
+    restoreActiveView();
+
+    console.log("S.Y.B FURNITURES loaded successfully ✅");
+
+  } catch (error) {
+
+    console.error("Firebase loading error:", error);
+
+  }
+
+});
+   
    
 /* add category */
   // Done 
 async function addCategory(){
-  let newCat = document.getElementById("newCat").value.trim().toLowerCase();
 
-  if(!newCat) return;
+  const input = document.getElementById("newCat");
 
-  await fb.addDoc(fb.collection(db, "categories"), {
-    name: newCat
-  });
+  const newCat = input.value.trim().toLowerCase();
 
-  document.getElementById("newCat").value = "";
+  if(!newCat){
 
-  loadCategoriesFromFirebase();
+    alert("Please enter a category name.");
+
+    return;
+
+  }
+
+  try {
+
+    // Check if category already exists
+    const snap = await fb.getDocs(
+      fb.collection(db, "categories")
+    );
+
+    const exists = snap.docs.some(
+      d => d.data().name?.toLowerCase() === newCat
+    );
+
+    if(exists){
+
+      alert("This category already exists.");
+
+      return;
+
+    }
+
+    // Save permanently to Firestore
+    await fb.addDoc(
+      fb.collection(db, "categories"),
+      {
+        name: newCat,
+        createdAt: Date.now()
+      }
+    );
+
+    input.value = "";
+
+    // Reload directly from Firebase
+    await loadCategoriesFromFirebase();
+
+    alert("Category added successfully ✅");
+
+  } catch(error){
+
+    console.error("Category error:", error);
+
+    alert("Failed to add category ❌");
+
+  }
+
 }
 
    
 // LOAD CATEGORIES 
    // Dome
 async function loadCategoriesFromFirebase(){
-  categories = [];
 
-  const snap = await fb.getDocs(fb.collection(db, "categories"));
+  try {
 
-  snap.forEach(docItem=>{
-    categories.push({
-      id: docItem.id,
-      name: docItem.data().name
+    categories = [];
+
+    const snap = await fb.getDocs(
+      fb.collection(db, "categories")
+    );
+
+    snap.forEach(docItem => {
+
+      const data = docItem.data();
+
+      if(data.name){
+
+        categories.push(data.name.toLowerCase());
+
+      }
+
     });
-  });
 
-  // convert to simple array for your system
-  categories = categories.map(c => c.name);
+    // Remove duplicates
+    categories = [...new Set(categories)];
 
-  loadCategories();
-  fillCats();
+    console.log("Categories loaded:", categories);
+
+    loadCategories();
+    fillCats();
+
+  } catch(error){
+
+    console.error("Error loading categories:", error);
+
+  }
+
 }
-
  //Done  
+
+   
 function fillCats(){
 
 let html = categories
@@ -1028,54 +1109,91 @@ let testimonials = [];
 let tIndex = 0;
 let tAuto = null;
 
-// DONE   
+// DONE 
+
+
+   
 /* LOAD */
 async function loadTestimonialsFromFirebase(){
-  testimonials = [];
 
-  const snap = await fb.getDocs(fb.collection(db, "testimonials"));
+  try {
 
-  snap.forEach(docItem=>{
-    testimonials.push({
-      id: docItem.id,
-      url: docItem.data().url
+    testimonials = [];
+
+    const snap = await fb.getDocs(
+      fb.collection(db, "testimonials")
+    );
+
+    snap.forEach(docItem => {
+
+      const data = docItem.data();
+
+      if(data.url){
+
+        testimonials.push({
+          id: docItem.id,
+          url: data.url
+        });
+
+      }
+
     });
-  });
 
-  // convert to simple array
-  testimonials = testimonials.map(t => t.url);
+    console.log("Testimonials loaded:", testimonials);
 
-  loadTestimonials();
+    loadTestimonials();
+
+  } catch(error){
+
+    console.error("Error loading testimonials:", error);
+
+  }
+
 }
 
+
+
+   
 function loadTestimonials(){
 
-  let box = document.getElementById("testimonialCarousel");
-  let dots = document.getElementById("testimonialDots");
+  const box = document.getElementById("testimonialCarousel");
+  const dots = document.getElementById("testimonialDots");
 
   if(!box || !dots) return;
 
-  // CREATE IMAGES
-  box.innerHTML = testimonials.map(img => `
-    <img src="${img}">
+  box.innerHTML = testimonials.map(t => `
+    <img
+      src="${t.url}"
+      alt="S.Y.B FURNITURES customer testimonial"
+      loading="lazy"
+    >
   `).join("");
 
-  // CREATE DOTS
-  dots.innerHTML = testimonials.map((_,i)=>`
-    <span class="dot ${i===0 ? 'active' : ''}"
-          onclick="scrollTestimonial(${i})">
+  dots.innerHTML = testimonials.map((_,i) => `
+    <span
+      class="dot ${i === 0 ? "active" : ""}"
+      onclick="scrollTestimonial(${i})">
     </span>
   `).join("");
 
-  // RESET INDEX
   tIndex = 0;
 
-  // START AUTO SLIDE
   startAuto();
+
+  // Update admin list if admin panel is open
+  if(typeof loadTestimonialAdmin === "function"){
+
+    loadTestimonialAdmin();
+
+  }
+
 }
 
+   
 /* SCROLL */
 // DONE
+
+   
 function scrollTestimonial(i) {
 const box = document.getElementById("testimonialCarousel");
 const dots = document.querySelectorAll("#testimonialDots .dot");
@@ -1231,27 +1349,78 @@ box.innerHTML = html;
 }
     
 function uploadTestimonials(){
-alert("Uploading testimonial...");
-cloudinary.openUploadWidget({
-cloudName:"db92r6j9z",
-uploadPreset:"ummuhalti",
-multiple:true
-}, async (error, result) => {
 
-if(error) return;
+  if(typeof cloudinary === "undefined"){
 
-if(result && result.event === "success"){
+    alert("Cloudinary is not loaded. Please refresh the page.");
 
-  await fb.addDoc(fb.collection(db, "testimonials"), {
-    url: result.info.secure_url
+    return;
+
+  }
+
+  alert("Opening testimonial uploader...");
+
+  cloudinary.openUploadWidget({
+
+    cloudName: "db92r6j9z",
+
+    uploadPreset: "ummuhalti",
+
+    sources: ["local", "camera"],
+
+    multiple: true,
+
+    resourceType: "image"
+
+  }, async (error, result) => {
+
+    if(error){
+
+      console.error("Cloudinary error:", error);
+
+      alert("Upload failed ❌");
+
+      return;
+
+    }
+
+    if(result && result.event === "success"){
+
+      try {
+
+        await fb.addDoc(
+          fb.collection(db, "testimonials"),
+          {
+            url: result.info.secure_url,
+            createdAt: Date.now()
+          }
+        );
+
+        console.log(
+          "Testimonial saved:",
+          result.info.secure_url
+        );
+
+        // Reload from Firebase
+        await loadTestimonialsFromFirebase();
+
+      } catch(firebaseError){
+
+        console.error(
+          "Firebase testimonial error:",
+          firebaseError
+        );
+
+        alert("Image uploaded but could not be saved ❌");
+
+      }
+
+    }
+
   });
 
-  loadTestimonialsFromFirebase();
-  loadTestimonialAdmin();
 }
-
-});
-}
+   
 async function addProduct(){
   if(uploadedImages.length === 0){
     alert("Upload images first");
