@@ -1014,7 +1014,6 @@ function loadCategories(){
 
   if(!bar) return;
 
-  // ABOUT BUTTON FIRST
   let html = `
     <div class="category-btn active"
          onclick="showView('about', this)">
@@ -1024,6 +1023,10 @@ function loadCategories(){
 
   // PRODUCT CATEGORIES
   categories.forEach(c => {
+
+    // Prevent duplicate WORK PLACE
+    if(c.toLowerCase() === "work place") return;
+
     html += `
       <div class="category-btn"
            onclick="showView('${c}', this)">
@@ -1031,6 +1034,14 @@ function loadCategories(){
       </div>
     `;
   });
+
+  // WORK PLACE VIDEO CATEGORY
+  html += `
+    <div class="category-btn"
+         onclick="showView('work place', this)">
+      WORK PLACE 🎥
+    </div>
+  `;
 
   bar.innerHTML = html;
 }
