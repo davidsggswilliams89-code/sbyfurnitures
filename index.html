@@ -1142,18 +1142,28 @@ function loadCategories(){
   `;
 
   // PRODUCT CATEGORIES
-  categories.forEach(c => {
+  // WORK PLACE FIRST
+if(categories.includes("work place")){
+  html += `
+    <div class="category-btn"
+         onclick="showView('work place', this)">
+      WORK PLACE
+    </div>
+  `;
+}
 
-    // Prevent duplicate WORK PLACE
-    if(c.toLowerCase() === "work place") return;
+// OTHER CATEGORIES
+categories.forEach(c => {
 
-    html += `
-      <div class="category-btn"
-           onclick="showView('${c}', this)">
-        ${c.toUpperCase()}
-      </div>
-    `;
-  });
+  if(c === "work place") return;
+
+  html += `
+    <div class="category-btn"
+         onclick="showView('${c}', this)">
+      ${c.toUpperCase()}
+    </div>
+  `;
+});
 
   // WORK PLACE VIDEO CATEGORY
   html += `
