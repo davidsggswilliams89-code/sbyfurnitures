@@ -802,6 +802,8 @@ document.querySelectorAll(".view")?.forEach(v=>{
 });
 
  // DONE
+/* VIEW + WORK PLACE VIDEO */
+
 function showView(type, el){
 
   document.querySelectorAll(".category-btn").forEach(b=>{
@@ -836,78 +838,110 @@ function showView(type, el){
 
   list.forEach((p,i)=>{
 
-let diff = Date.now() - p.date;
+    let diff = Date.now() - p.date;
 
-let timeText = "";
+    let timeText = "";
 
-let mins = Math.floor(diff / 60000);
-let hours = Math.floor(diff / 3600000);
-let days = Math.floor(diff / 86400000);
+    let mins = Math.floor(diff / 60000);
+    let hours = Math.floor(diff / 3600000);
+    let days = Math.floor(diff / 86400000);
 
-if(mins < 60){
-  timeText = mins + " min ago";
-}
-else if(hours < 24){
-  timeText = hours + " hr ago";
-}
-else{
-  timeText = days + " day ago";
-}
+    if(mins < 60){
+      timeText = mins + " min ago";
+    }
+    else if(hours < 24){
+      timeText = hours + " hr ago";
+    }
+    else{
+      timeText = days + " day ago";
+    }
 
-let mediaHTML = "";
+    /* MEDIA */
 
-if(
-  p.category === "work place" ||
-  p.mediaType === "video"
-){
+    let media = "";
 
-  mediaHTML = (p.videos || []).map(video => `
-    
-    <video
-      src="${video}"
-      controls
-      playsinline
-      preload="metadata">
-    </video>
+    /* WORK PLACE = VIDEOS */
+    if(type === "work place"){
 
-  `).join("");
+      media = (p.videos || []).map(video => `
+        <video
+          src="${video}"
+          muted
+          playsinline
+          loop
+          preload="metadata">
+        </video>
+      `).join("");
 
-}else{
+    }
 
-  mediaHTML = (p.images || []).map(img => `
-    <img src="${img}">
-  `).join("");
+    /* OTHER CATEGORIES = IMAGES */
+    else{
 
-}
+      media = (p.images || []).map(img => `
+        <img src="${img}">
+      `).join("");
 
-html += `
+    }
+
+    html += `
       <div class="card">
+
         <div class="img-wrap">
 
-  <div class="new-badge">${timeText}</div>
+          <div class="new-badge">
+            ${timeText}
+          </div>
 
-  <div class="carousel car${type}${i}">
-    ${mediaHTML}
-  </div>
+          <div class="carousel car${type}${i}">
+            ${media}
+          </div>
 
-</div>
+        </div>
 
         <div class="dots dots${type}${i}"></div>
 
-        <div class="price">₦ ${p.price}</div>
+        <div class="price">
+          ₦ ${p.price}
+        </div>
 
-        <button class="buy-btn" onclick="buyNow(${i},'${type}')">
+        <button
+          class="buy-btn"
+          onclick="buyNow(${i},'${type}')">
+
           BUY NOW
+
         </button>
+
       </div>
     `;
   });
 
   view.innerHTML = html;
+
   view.classList.add("active-view");
 
-  list.forEach((p,i)=>setupCarousel(type,i));
+  /* SETUP CAROUSEL */
+
+  list.forEach((p,i)=>{
+
+    setupCarousel(type,i);
+
+    /* WORK PLACE VIDEO AUTOPLAY */
+
+    if(type === "work place"){
+
+      const carousel =
+        document.querySelector(".car" + type + i);
+
+      setupVideoAutoplay(carousel);
+
+    }
+
+  });
+
 }
+   
 // DONE
 /* BUY NOW */
 function buyNow(i, type){
