@@ -594,7 +594,8 @@ let uploadedImages = [];
 
 let adminPanel, delCat, delList, aName, aPrice, aCategory, aboutView;
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+
   adminPanel = document.getElementById("adminPanel");
   delCat = document.getElementById("delCat");
   delList = document.getElementById("delList");
@@ -603,11 +604,25 @@ document.addEventListener("DOMContentLoaded", () => {
   aCategory = document.getElementById("aCategory");
   aboutView = document.getElementById("aboutView");
 
-  loadCategoriesFromFirebase();
-  loadProductsFromFirebase();
-  loadTestimonialsFromFirebase();
-});
+  try {
 
+    // Load everything from Firebase
+    await loadCategoriesFromFirebase();
+    await loadProductsFromFirebase();
+    await loadTestimonialsFromFirebase();
+
+    // Restore the page after Firebase data has loaded
+    restoreActiveView();
+
+    console.log("S.Y.B FURNITURES loaded successfully ✅");
+
+  } catch (error) {
+
+    console.error("Firebase loading error:", error);
+
+  }
+
+});
    
 /* add category */
   // Done 
