@@ -624,45 +624,111 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 });
    
+   
 /* add category */
   // Done 
 async function addCategory(){
-  let newCat = document.getElementById("newCat").value.trim().toLowerCase();
 
-  if(!newCat) return;
+  const input = document.getElementById("newCat");
 
-  await fb.addDoc(fb.collection(db, "categories"), {
-    name: newCat
-  });
+  const newCat = input.value.trim().toLowerCase();
 
-  document.getElementById("newCat").value = "";
+  if(!newCat){
 
-  loadCategoriesFromFirebase();
+    alert("Please enter a category name.");
+
+    return;
+
+  }
+
+  try {
+
+    // Check if category already exists
+    const snap = await fb.getDocs(
+      fb.collection(db, "categories")
+    );
+
+    const exists = snap.docs.some(
+      d => d.data().name?.toLowerCase() === newCat
+    );
+
+    if(exists){
+
+      alert("This category already exists.");
+
+      return;
+
+    }
+
+    // Save permanently to Firestore
+    await fb.addDoc(
+      fb.collection(db, "categories"),
+      {
+        name: newCat,
+        createdAt: Date.now()
+      }
+    );
+
+    input.value = "";
+
+    // Reload directly from Firebase
+    await loadCategoriesFromFirebase();
+
+    alert("Category added successfully ✅");
+
+  } catch(error){
+
+    console.error("Category error:", error);
+
+    alert("Failed to add category ❌");
+
+  }
+
 }
 
    
 // LOAD CATEGORIES 
    // Dome
 async function loadCategoriesFromFirebase(){
-  categories = [];
 
-  const snap = await fb.getDocs(fb.collection(db, "categories"));
+  try {
 
-  snap.forEach(docItem=>{
-    categories.push({
-      id: docItem.id,
-      name: docItem.data().name
+    categories = [];
+
+    const snap = await fb.getDocs(
+      fb.collection(db, "categories")
+    );
+
+    snap.forEach(docItem => {
+
+      const data = docItem.data();
+
+      if(data.name){
+
+        categories.push(data.name.toLowerCase());
+
+      }
+
     });
-  });
 
-  // convert to simple array for your system
-  categories = categories.map(c => c.name);
+    // Remove duplicates
+    categories = [...new Set(categories)];
 
-  loadCategories();
-  fillCats();
+    console.log("Categories loaded:", categories);
+
+    loadCategories();
+    fillCats();
+
+  } catch(error){
+
+    console.error("Error loading categories:", error);
+
+  }
+
 }
-
  //Done  
+
+   
 function fillCats(){
 
 let html = categories
