@@ -758,16 +758,26 @@ async function loadCategoriesFromFirebase(){
    
 function fillCats(){
 
-let html = categories
-.map(c => `<option value="${c}">${c.toUpperCase()}</option>`)
-.join("");
+  let allCategories = [...categories];
 
-delCat.innerHTML = html;
+  // Always include WORK PLACE
+  if(!allCategories.includes("work place")){
+    allCategories.push("work place");
+  }
 
-document.getElementById("catDelete").innerHTML = html;
+  let html = allCategories
+    .map(c => `
+      <option value="${c}">
+        ${c.toUpperCase()}
+      </option>
+    `)
+    .join("");
 
-// ADD THIS
-aCategory.innerHTML = html;
+  delCat.innerHTML = html;
+
+  document.getElementById("catDelete").innerHTML = html;
+
+  aCategory.innerHTML = html;
 
 }
    
