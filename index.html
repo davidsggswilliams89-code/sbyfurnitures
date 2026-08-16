@@ -203,6 +203,7 @@ padding:4px 6px;
 border-radius:5px;
 z-index:10;
 }
+    
 /* CAROUSEL */
 .carousel{
   display:flex;
@@ -219,7 +220,19 @@ z-index:10;
 .carousel::-webkit-scrollbar{
   display:none;
 }
+/* WORK PLACE VIDEO */
 
+.carousel video{
+  flex:0 0 100%;
+  width:100%;
+  height:440px;
+  object-fit:cover;
+  scroll-snap-align:start;
+  border-radius:12px;
+  background:#000;
+  display:block;
+}
+    
 .carousel img{
   flex:0 0 100%;
   width:100%;
@@ -1018,6 +1031,65 @@ function uploadImage(){
 
   });
 }
+/* WORK PLACE VIDEO UPLOAD */
+
+let uploadedVideos = [];
+
+function uploadWorkPlaceVideo(){
+
+  if(typeof cloudinary === "undefined"){
+    alert("Upload tool not loaded. Refresh page.");
+    return;
+  }
+
+  uploadedVideos = [];
+
+  cloudinary.openUploadWidget({
+
+    cloudName: "db92r6j9z",
+    uploadPreset: "ummuhalti",
+
+    resourceType: "video",
+
+    sources: ["local", "camera"],
+
+    multiple: true,
+
+    clientAllowedFormats: ["mp4", "mov", "webm"]
+
+  }, (error, result) => {
+
+    if(error){
+      console.log("Video upload error:", error);
+      alert("Video upload failed ❌");
+      return;
+    }
+
+    if(result && result.event === "success"){
+
+      uploadedVideos.push(result.info.secure_url);
+
+      console.log(
+        "Uploaded video:",
+        result.info.secure_url
+      );
+    }
+
+    if(result && result.event === "close"){
+
+      if(uploadedVideos.length > 0){
+
+        alert(
+          uploadedVideos.length +
+          " WORK PLACE video(s) uploaded successfully! ✅"
+        );
+
+      }
+
+    }
+
+  });
+}
    
 /* SAVE */
 // DONE
@@ -1447,22 +1519,90 @@ function uploadTestimonials(){
 }
    
 async function addProduct(){
+
+  let category = aCategory.value.toLowerCase();
+
+  /* =========================
+     WORK PLACE VIDEO PRODUCT
+     ========================= */
+
+  if(category === "work place"){
+
+    if(uploadedVideos.length === 0){
+
+      alert("Upload WORK PLACE video first 🎥");
+
+      return;
+    }
+
+    let newProduct = {
+
+      name: aName.value.trim(),
+
+      price: aPrice.value.trim(),
+
+      category: "work place",
+
+      videos: [...uploadedVideos],
+
+      mediaType: "video",
+
+      date: Date.now()
+
+    };
+
+    await fb.addDoc(
+      fb.collection(db, "products"),
+      newProduct
+    );
+
+    uploadedVideos = [];
+
+    aName.value = "";
+    aPrice.value = "";
+
+    alert("WORK PLACE video saved permanently ✅");
+
+    loadProductsFromFirebase();
+
+    return;
+  }
+
+
+  /* =========================
+     NORMAL IMAGE PRODUCT
+     ========================= */
+
   if(uploadedImages.length === 0){
-    alert("Upload images first");
+
+    alert("Upload images first 📷");
+
     return;
   }
 
   let newProduct = {
-    name: aName.value,
-    price: aPrice.value,
-    category: aCategory.value.toLowerCase(),
+
+    name: aName.value.trim(),
+
+    price: aPrice.value.trim(),
+
+    category: category,
+
     images: [...uploadedImages],
+
+    mediaType: "image",
+
     date: Date.now()
+
   };
 
-  await fb.addDoc(fb.collection(db, "products"), newProduct);
+  await fb.addDoc(
+    fb.collection(db, "products"),
+    newProduct
+  );
 
   uploadedImages = [];
+
   aName.value = "";
   aPrice.value = "";
 
