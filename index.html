@@ -1109,54 +1109,91 @@ let testimonials = [];
 let tIndex = 0;
 let tAuto = null;
 
-// DONE   
+// DONE 
+
+
+   
 /* LOAD */
 async function loadTestimonialsFromFirebase(){
-  testimonials = [];
 
-  const snap = await fb.getDocs(fb.collection(db, "testimonials"));
+  try {
 
-  snap.forEach(docItem=>{
-    testimonials.push({
-      id: docItem.id,
-      url: docItem.data().url
+    testimonials = [];
+
+    const snap = await fb.getDocs(
+      fb.collection(db, "testimonials")
+    );
+
+    snap.forEach(docItem => {
+
+      const data = docItem.data();
+
+      if(data.url){
+
+        testimonials.push({
+          id: docItem.id,
+          url: data.url
+        });
+
+      }
+
     });
-  });
 
-  // convert to simple array
-  testimonials = testimonials.map(t => t.url);
+    console.log("Testimonials loaded:", testimonials);
 
-  loadTestimonials();
+    loadTestimonials();
+
+  } catch(error){
+
+    console.error("Error loading testimonials:", error);
+
+  }
+
 }
 
+
+
+   
 function loadTestimonials(){
 
-  let box = document.getElementById("testimonialCarousel");
-  let dots = document.getElementById("testimonialDots");
+  const box = document.getElementById("testimonialCarousel");
+  const dots = document.getElementById("testimonialDots");
 
   if(!box || !dots) return;
 
-  // CREATE IMAGES
-  box.innerHTML = testimonials.map(img => `
-    <img src="${img}">
+  box.innerHTML = testimonials.map(t => `
+    <img
+      src="${t.url}"
+      alt="S.Y.B FURNITURES customer testimonial"
+      loading="lazy"
+    >
   `).join("");
 
-  // CREATE DOTS
-  dots.innerHTML = testimonials.map((_,i)=>`
-    <span class="dot ${i===0 ? 'active' : ''}"
-          onclick="scrollTestimonial(${i})">
+  dots.innerHTML = testimonials.map((_,i) => `
+    <span
+      class="dot ${i === 0 ? "active" : ""}"
+      onclick="scrollTestimonial(${i})">
     </span>
   `).join("");
 
-  // RESET INDEX
   tIndex = 0;
 
-  // START AUTO SLIDE
   startAuto();
+
+  // Update admin list if admin panel is open
+  if(typeof loadTestimonialAdmin === "function"){
+
+    loadTestimonialAdmin();
+
+  }
+
 }
 
+   
 /* SCROLL */
 // DONE
+
+   
 function scrollTestimonial(i) {
 const box = document.getElementById("testimonialCarousel");
 const dots = document.querySelectorAll("#testimonialDots .dot");
