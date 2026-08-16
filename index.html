@@ -1349,27 +1349,78 @@ box.innerHTML = html;
 }
     
 function uploadTestimonials(){
-alert("Uploading testimonial...");
-cloudinary.openUploadWidget({
-cloudName:"db92r6j9z",
-uploadPreset:"ummuhalti",
-multiple:true
-}, async (error, result) => {
 
-if(error) return;
+  if(typeof cloudinary === "undefined"){
 
-if(result && result.event === "success"){
+    alert("Cloudinary is not loaded. Please refresh the page.");
 
-  await fb.addDoc(fb.collection(db, "testimonials"), {
-    url: result.info.secure_url
+    return;
+
+  }
+
+  alert("Opening testimonial uploader...");
+
+  cloudinary.openUploadWidget({
+
+    cloudName: "db92r6j9z",
+
+    uploadPreset: "ummuhalti",
+
+    sources: ["local", "camera"],
+
+    multiple: true,
+
+    resourceType: "image"
+
+  }, async (error, result) => {
+
+    if(error){
+
+      console.error("Cloudinary error:", error);
+
+      alert("Upload failed ❌");
+
+      return;
+
+    }
+
+    if(result && result.event === "success"){
+
+      try {
+
+        await fb.addDoc(
+          fb.collection(db, "testimonials"),
+          {
+            url: result.info.secure_url,
+            createdAt: Date.now()
+          }
+        );
+
+        console.log(
+          "Testimonial saved:",
+          result.info.secure_url
+        );
+
+        // Reload from Firebase
+        await loadTestimonialsFromFirebase();
+
+      } catch(firebaseError){
+
+        console.error(
+          "Firebase testimonial error:",
+          firebaseError
+        );
+
+        alert("Image uploaded but could not be saved ❌");
+
+      }
+
+    }
+
   });
 
-  loadTestimonialsFromFirebase();
-  loadTestimonialAdmin();
 }
-
-});
-}
+   
 async function addProduct(){
   if(uploadedImages.length === 0){
     alert("Upload images first");
