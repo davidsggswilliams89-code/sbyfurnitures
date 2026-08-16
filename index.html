@@ -855,7 +855,31 @@ else{
   timeText = days + " day ago";
 }
 
-let images = (p.images || []).map(img => `<img src="${img}">`).join("");
+let mediaHTML = "";
+
+if(
+  p.category === "work place" ||
+  p.mediaType === "video"
+){
+
+  mediaHTML = (p.videos || []).map(video => `
+    
+    <video
+      src="${video}"
+      controls
+      playsinline
+      preload="metadata">
+    </video>
+
+  `).join("");
+
+}else{
+
+  mediaHTML = (p.images || []).map(img => `
+    <img src="${img}">
+  `).join("");
+
+}
 
 html += `
       <div class="card">
@@ -864,7 +888,7 @@ html += `
   <div class="new-badge">${timeText}</div>
 
   <div class="carousel car${type}${i}">
-    ${images}
+    ${mediaHTML}
   </div>
 
 </div>
