@@ -941,6 +941,78 @@ function showView(type, el){
   });
 
 }
+
+/* =========================================================
+   WORK PLACE VIDEO AUTO PLAY
+   TIKTOK STYLE
+========================================================= */
+
+function setupVideoAutoplay(carousel){
+
+  if(!carousel) return;
+
+  const videos = carousel.querySelectorAll("video");
+
+  if(!videos.length) return;
+
+  const observer = new IntersectionObserver((entries)=>{
+
+    entries.forEach(entry=>{
+
+      const video = entry.target;
+
+      if(entry.isIntersecting && entry.intersectionRatio >= 0.6){
+
+        /* Pause every other video */
+
+        videos.forEach(v=>{
+
+          if(v !== video){
+
+            v.pause();
+            v.currentTime = 0;
+
+          }
+
+        });
+
+        /* Autoplay */
+
+        video.muted = true;
+        video.playsInline = true;
+
+        video.play().catch(()=>{
+
+          console.log(
+            "Autoplay requires user interaction"
+          );
+
+        });
+
+      }
+
+      else{
+
+        /* Pause when video leaves screen */
+
+        video.pause();
+
+      }
+
+    });
+
+  },{
+    threshold:[0.6]
+  });
+
+  videos.forEach(video=>{
+
+    observer.observe(video);
+
+  });
+
+}
+   
    
 // DONE
 /* BUY NOW */
