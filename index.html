@@ -1047,19 +1047,16 @@ function showView(type, el){
         p.videos.length > 0
       ){
 
-        media =
-          p.videos.map(video => `
-
-            <video
-              src="${video}"
-              muted
-              playsinline
-              loop
-              preload="metadata"
-              webkit-playsinline="true">
-            </video>
-
-          `).join("");
+media = (p.videos || []).map(video => `
+  <video
+    src="${video}"
+    muted
+    playsinline
+    loop
+    preload="metadata"
+    onclick="toggleVideoSound(this)">
+  </video>
+`).join("");
 
       }
       else{
