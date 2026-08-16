@@ -1344,6 +1344,37 @@ function setupCarousel(type,i){
 
 
 /* =========================================================
+   WORK PLACE VIDEO SOUND
+   TAP VIDEO = SOUND ON
+========================================================= */
+
+function toggleVideoSound(video){
+
+  if(!video) return;
+
+  // Pause and mute all other videos
+  document.querySelectorAll(".carousel video").forEach(v => {
+
+    if(v !== video){
+      v.pause();
+      v.muted = true;
+    }
+
+  });
+
+  // Turn sound ON
+  video.muted = false;
+
+  video.volume = 1;
+
+  video.play().catch(error => {
+    console.log("Video playback error:", error);
+  });
+
+}  
+
+
+/* =========================================================
    WORK PLACE — TIKTOK STYLE VIDEO AUTOPLAY
 ========================================================= */
 
