@@ -220,7 +220,7 @@ z-index:10;
 .carousel::-webkit-scrollbar{
   display:none;
 }
-/* WORK PLACE VIDEO */
+/* WORK SHOP VIDEO */
 .carousel video{
   flex:0 0 100%;
   width:100%;
@@ -232,7 +232,7 @@ z-index:10;
   display:block;
 }
 
-/* WORK PLACE VIDEO — 9:16 PORTRAIT */
+/* WORK SHOP VIDEO — 9:16 PORTRAIT */
 
 .carousel video{
   flex:0 0 100%;
@@ -258,7 +258,7 @@ z-index:10;
 
 .video-sound-btn{
   position:absolute;
-  left:12px;
+  right:12px;
   bottom:12px;
 
   width:38px;
@@ -560,7 +560,7 @@ SBY FURNITURES HEADER
       <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png">        
       Facebook        
     </div>        
-  </a>        <a href="https://wa.me/2349035341879" target="_blank" style="text-decoration:none;">        
+  </a>        <a href="https://wa.me/2348028301115" target="_blank" style="text-decoration:none;">        
     <div class="social-btn wa">        
       <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">        
       WhatsApp        
@@ -596,7 +596,7 @@ SBY FURNITURES HEADER
 
 <button class="btn" onclick="uploadWorkPlaceVideo()"
 style="background:#1877F2;">
-🎥 Upload WORK PLACE Video
+🎥 Upload WORK SHOP Video
 </button>
 
 <button class="btn" onclick="addProduct()">
@@ -733,10 +733,10 @@ async function addCategory(){
 
   }
 
-  /* WORK PLACE is automatic */
-  if(newCat === "work place"){
+  /* WORK SHOP is automatic */
+  if(newCat === "work shop"){
 
-    alert("WORK PLACE is already available automatically 🎥");
+    alert("WORK SHOP is already available automatically 🎥");
 
     return;
 
@@ -889,10 +889,10 @@ async function deleteCategory(){
   let cat =
     document.getElementById("catDelete").value;
 
-  /* Prevent deleting WORK PLACE */
+  /* Prevent deleting WORK SHOP */
   if(cat === "work place"){
 
-    alert("WORK PLACE is a permanent category and cannot be deleted 🎥");
+    alert("WORK SHOP is a permanent category and cannot be deleted 🎥");
 
     return;
 
@@ -1086,7 +1086,7 @@ function showView(type, el){
     let media = "";
 
 
-    /* WORK PLACE = VIDEO */
+    /* WORK SHOP = VIDEO */
     if(type === "work place"){
 
       if(
@@ -1227,8 +1227,8 @@ media = (p.videos || []).map(video => `
       <div class="card">
 
         <h3 style="text-align:center;">
-          ${type === "work place"
-            ? "WORK PLACE 🎥"
+          ${type === "work shop"
+            ? "WORK SHOP 🎥"
             : type.toUpperCase()}
         </h3>
 
@@ -1260,8 +1260,8 @@ media = (p.videos || []).map(video => `
     );
 
 
-    /* WORK PLACE VIDEO */
-    if(type === "work place"){
+    /* WORK SHOP VIDEO */
+    if(type === "work shop"){
 
       const carousel =
         document.getElementById(
@@ -1444,7 +1444,7 @@ function toggleVideoSound(button){
 
 }
 /* =========================================================
-   WORK PLACE — TIKTOK STYLE VIDEO AUTOPLAY
+   WORK SHOP — TIKTOK STYLE VIDEO AUTOPLAY
 ========================================================= */
 
 function setupVideoAutoplay(carousel){
@@ -1645,14 +1645,14 @@ function buyNow(i,type){
 
 
   /* =======================================================
-     WORK PLACE VIDEO
+     WORK SHOP VIDEO
   ======================================================= */
 
   let selectedMedia =
     "";
 
 
-  if(type === "work place"){
+  if(type === "work shop"){
 
     const videos =
       Array.isArray(p.videos)
@@ -1704,7 +1704,7 @@ Is this available? I want to buy.`;
 
   window.open(
 
-    "https://wa.me/2349035341879?text=" +
+    "https://wa.me/2348028301115?text=" +
     encodeURIComponent(msg),
 
     "_blank"
@@ -1889,10 +1889,10 @@ function uploadImage(){
 
 
 /* =========================================================
-   WORK PLACE VIDEO UPLOAD
+   WORK SHOP VIDEO UPLOAD
 ========================================================= */
 
-function uploadWorkPlaceVideo(){
+function uploadWorkShopVideo(){
 
   if(
     typeof cloudinary ===
@@ -1929,10 +1929,10 @@ function uploadWorkPlaceVideo(){
     clientAllowedFormats:
       ["mp4","mov","webm"],
 
-    // Allow videos up to 50 MB
+    // Allow videos up to 100 MB
     maxFileSize:
-      52428800
-
+  104857600
+    
   }, (error,result) => {
 
     if(error){
@@ -1979,7 +1979,7 @@ function uploadWorkPlaceVideo(){
 
         alert(
           uploadedVideos.length +
-          " WORK PLACE video(s) uploaded successfully! ✅"
+          " WORK SHOP video(s) uploaded successfully! ✅"
         );
 
       }
@@ -2021,9 +2021,9 @@ function loadCategories(){
 
     <div
       class="category-btn"
-      onclick="showView('work place', this)">
+      onclick="showView('work shop', this)">
 
-      WORK PLACE 🎥
+      WORK SHOP 🎥
 
     </div>
 
@@ -2310,12 +2310,12 @@ async function addProduct(){
 
 
   /* =======================================================
-     WORK PLACE VIDEO
+     WORK SHOP VIDEO
   ======================================================= */
 
   if(
     category ===
-    "work place"
+    "work shop"
   ){
 
     if(
@@ -2323,7 +2323,7 @@ async function addProduct(){
     ){
 
       alert(
-        "Upload WORK PLACE video first 🎥"
+        "Upload WORK SHOP video first 🎥"
       );
 
       return;
@@ -2372,7 +2372,7 @@ async function addProduct(){
 
 
     alert(
-      "WORK PLACE video saved permanently ✅"
+      "WORK SHOP video saved permanently ✅"
     );
 
 
