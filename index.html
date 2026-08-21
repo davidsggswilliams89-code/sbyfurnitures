@@ -1907,9 +1907,7 @@ function uploadWorkPlaceVideo(){
 
   }
 
-
   uploadedVideos = [];
-
 
   cloudinary.openUploadWidget({
 
@@ -1929,10 +1927,13 @@ function uploadWorkPlaceVideo(){
       true,
 
     clientAllowedFormats:
-      ["mp4","mov","webm"]
+      ["mp4","mov","webm"],
+
+    // Allow videos up to 50 MB
+    maxFileSize:
+      52428800
 
   }, (error,result) => {
-
 
     if(error){
 
@@ -1949,7 +1950,6 @@ function uploadWorkPlaceVideo(){
 
     }
 
-
     if(
       result &&
       result.event ===
@@ -1960,14 +1960,12 @@ function uploadWorkPlaceVideo(){
         result.info.secure_url
       );
 
-
       console.log(
         "Uploaded video:",
         result.info.secure_url
       );
 
     }
-
 
     if(
       result &&
@@ -1991,8 +1989,6 @@ function uploadWorkPlaceVideo(){
   });
 
 }
-
-
 /* =========================================================
    LOAD CATEGORY BAR
    HOME → WORK PLACE → OTHER CATEGORIES
